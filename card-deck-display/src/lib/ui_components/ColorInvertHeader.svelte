@@ -20,22 +20,18 @@ class:warning={$status === StatusChoices.WARNING}>{text}</div>
         width: fit-content;
     }
     .running{
-        background-image: linear-gradient(135deg, rgb(48, 207, 247), rgb(20, 236, 172));
+        background-image: linear-gradient(135deg, var(--running-primary), var(--neon-green));
         color: rgb(19, 20, 20);
     }
 
     .error{
-        background-image: linear-gradient(135deg, #ff5443, rgb(207, 36, 36));
+        background-image: linear-gradient(135deg, var(--error-primary), rgb(207, 36, 36));
         color:rgb(19, 20, 20);
-        /* box-shadow: 0px 0px 14px 10px #662019; */
-        animation: box-glow-error 600ms linear 0s infinite alternate;
     }
 
     .warning{
-        background-image: linear-gradient(135deg, #ff9843, rgb(230, 47, 62));
+        background-image: linear-gradient(135deg, var(--warning-primary), rgb(230, 68, 47));
         color:rgb(19, 20, 20);
-        /* box-shadow: 0px 0px 14px 10px #664219; */
-        animation: box-glow-warning 600ms linear 0s infinite alternate;
     }
 
 </style>

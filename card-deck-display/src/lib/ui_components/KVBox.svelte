@@ -25,13 +25,13 @@
         font-weight: 500;
         font-size: 25px;
         vertical-align: middle;
-        color: #a9f0ff;
+        color: var(--running-light);
         text-transform: uppercase;
     }
     .error{
-        color: #ff5443;
+        color: var(--error-primary);
     }
     .warning{
-        color: #ff9843;
+        color: var(--warning-primary);
     }
 </style>

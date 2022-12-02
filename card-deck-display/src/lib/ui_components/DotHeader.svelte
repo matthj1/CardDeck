@@ -14,12 +14,12 @@ class:warning={$status === StatusChoices.WARNING}>. : {text} : .</h1>
 
 <style>
     .error{
-        color: #ff5443;
+        color: var(--error-primary);
         text-shadow: 1px 1px 10px #662019;
     }
 
     .warning{
-        color: #ff9843;
+        color: var(--warning-primary);
         text-shadow: 1px 1px 10px #664219;
     }
 

@@ -74,28 +74,28 @@ style="top: {top}px; left: {left}px; transform: scale({scale};">
 
     @keyframes glow{
         0%{
-            box-shadow: 0px 0px 120px #2567a1;
+            box-shadow: 0px 0px 120px var(--running-glow);
         }
         100%{
-            box-shadow: 0px 0px 0px #144571;
+            box-shadow: 0px 0px 0px var(--running-glow);
         }
     }
 
     @keyframes error-glow{
         0%{
-            box-shadow: 0px 0px 120px #ff5443;
+            box-shadow: 0px 0px 120px var(--error-primary);
         }
         100%{
-            box-shadow: 0px 0px 0px #ff5443;
+            box-shadow: 0px 0px 0px var(--error-primary);
         }
     }
 
     @keyframes warning-glow{
         0%{
-            box-shadow: 0px 0px 120px #ff9843;
+            box-shadow: 0px 0px 120px var(--warning-primary);
         }
         100%{
-            box-shadow: 0px 0px 0px #ff9843;
+            box-shadow: 0px 0px 0px var(--warning-primary);
         }
     }
 

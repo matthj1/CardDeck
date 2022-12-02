@@ -10,7 +10,7 @@ body {
 	box-sizing: border-box;
 	font-family: "Roboto", san-serif;
 	background-color: rgb(19, 20, 20);
-	color: #36d5f8;
+	color: var(--running-primary);
 	background      : radial-gradient(rgb(33, 36, 36) 1px, rgb(19, 20, 20) 2px);
   background-size : 30px 30px;
   line-height: 1.5;
@@ -26,4 +26,18 @@ h1, h2, h3, h4, h5, h6 {
 
 #app{
   height: 100%;
+}
+
+:root{
+  --running-primary: #36d5f8;
+  --running-light: #a9f0ff;
+  --running-glow: #2567a1;
+
+  --warning-primary: #ff9843;
+
+  --error-primary: #ff5443;
+
+  --neon-purple: #aa67ff;
+  --neon-pink: #f23f92;
+  --neon-green: #00f49f;
 }

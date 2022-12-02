@@ -130,7 +130,7 @@
     }
 
     hr{
-        border-top: 2px solid #a9f0ff;
+        border-top: 2px solid var(--running-light);
         margin-bottom: 20px;
     }
 
@@ -143,10 +143,10 @@
     .bigger{
         font-size: 25px;
         vertical-align: middle;
-        color: #a9f0ff;
+        color: var(--running-light);
     }
 
     .warning{
-        color: #ff9843;
+        color: var(--warning-primary);
     }
 </style>

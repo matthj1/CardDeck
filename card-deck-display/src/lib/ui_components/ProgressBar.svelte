@@ -32,24 +32,24 @@
     .progress-outer{
         width: 100%;
         height: 40px;
-        border: 1px solid #00f49f;
+        border: 1px solid var(--neon-green);
         position: relative;
     }
 
     .progress-inner{
         height: 100%;
-        background-color: #00f49f;
+        background-color: var(--neon-green);
         transition: width 3s linear;
         width: 0;
     }
 
     .warning.progress-outer{
-        border: 1px solid #ff9843;
+        border: 1px solid var(--warning-primary);
     }
     .warning .progress-inner{
-        background-color: #ff9843 !important;
+        background-color: var(--warning-primary) !important;
     }
     .warning .status-center{
-        color: #a9f0ff;
+        color: var(--running-light);
     }
 </style>

@@ -30,11 +30,11 @@
     }
 
     .error .top, .error .bottom{
-        border-color: #ff5443 !important;
+        border-color: var(--error-primary) !important;
     }
 
     .warning .top, .warning .bottom{
-        border-color: #ff9843 !important;
+        border-color: var(--warning-primary) !important;
     }
 
     .top {
