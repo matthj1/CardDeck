@@ -1,0 +1,18 @@
+*.pyc
+selenium/
+
+# virtualenv
+env/
+pip-selfcheck.json
+
+node_modules/
+
+# JS source maps
+*.map
+
+# Visual Studio Code specific files
+.vscode/
+
+# direnv files
+.envrc
+

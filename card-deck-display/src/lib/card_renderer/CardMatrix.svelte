@@ -2,6 +2,7 @@
     import type {ICardItem, ICardArray} from "../../interfaces"
     import CardWrapper from "./CardWrapper.svelte";
     import Spinner from "../ui_components/Spinner.svelte";
+    import {fade} from "svelte/transition"
 
     export let cards: ICardItem[];
     export let historySize: number;
@@ -210,9 +211,13 @@
 <svelte:window bind:innerWidth={width} bind:innerHeight={height}/>
 
 {#each cardArray as card (card.id)}
+    <div class="placeholder-center fade-immediately">
+        <Spinner size={60} thin={true}/>
+        <div class="no-items">. : DRAWING FROM THE DECK : .</div>
+    </div>
     <CardWrapper status={card.props.transfer.status} {card} {...coordsToAbsolutePosition(card.position, displayDimension, width, height)}></CardWrapper>
 {:else}
-    <div class="placeholder-center">
+    <div out:fade={{duration: 2000}} class="placeholder-center">
         <Spinner size={60} thin={true}/>
         <div class="no-items">. : {message.toUpperCase()} : .</div>
     </div>
@@ -227,7 +232,24 @@
         flex-direction: column;
         gap: 30px;
     }
+
     .no-items{
         display: block;
+    }
+
+    .fade-immediately{
+        animation: fade 2000ms;
+        opacity: 0;
+    }
+    @keyframes fade{
+        0%{
+            opacity: 1;
+        }
+        50%{
+            opacity: 1;
+        }
+        100%{
+            opacity: 0;
+        }
     }
 </style>
