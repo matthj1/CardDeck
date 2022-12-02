@@ -104,7 +104,7 @@
     {:else}
 
     <p class="bigger bolder">{transfer.response.name}</p>
-    <p>{transfer.response.message}</p>
+    <p class="error">{transfer.response.message}</p>
 
     {/if}
 
@@ -130,7 +130,8 @@
     }
 
     hr{
-        border-top: 2px solid var(--running-light);
+        border: none;
+        border-top: 3px solid var(--running-light);
         margin-bottom: 20px;
     }
 
@@ -148,5 +149,9 @@
 
     .warning{
         color: var(--warning-primary);
+    }
+
+    .error{
+        color: var(--error-primary)
     }
 </style>
