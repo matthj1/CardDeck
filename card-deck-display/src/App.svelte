@@ -1,17 +1,17 @@
 <script lang="ts">
   import CardMatrix from "./lib/card_renderer/CardMatrix.svelte";
   import TransferCard from "./lib/cards/TransferCard.svelte"
-  import ErrorCard from "./lib/cards/ErrorCard.svelte";
   import type {IInputData, ICardItem} from "./interfaces"
   import {StatusChoices} from "./interfaces"
   import { parallelFetch } from "./parallelFetch";
+  import LoadingLogo from "./lib/ui_components/LoadingLogo.svelte";
 
   let data: IInputData[] = [];
   let cards: ICardItem[] = [];
+  let auth_failure = false
 
   const cardTypeToComponent = {
     "PACS_TRANSFER": TransferCard,
-    "ERROR": ErrorCard
   }
 
   $: {
@@ -36,13 +36,10 @@
     let flattenedData = allData.map(a => a.data).flat(1) 
     let allStatuses = allData.map(a => a.status)
     if(allStatuses.includes(403)){
-      return [{
-        type: "ERROR",
-        id: 9999999999999,
-        status: StatusChoices.ERROR
-      }]
+      auth_failure = true;
+      return [];
     }
-    return flattenedData
+    return flattenedData;
   }
 
   async function poll(){
@@ -57,7 +54,13 @@
 </script>
 
 <main>
-<CardMatrix historySize={3} cards={cards}></CardMatrix>
+{#if !auth_token}
+  <LoadingLogo status={StatusChoices.ERROR} message="No API token"/>
+{:else if auth_failure}
+  <LoadingLogo status={StatusChoices.ERROR} message="One or more endpoints returned 403. Please try a different token"/>
+{:else}
+  <CardMatrix historySize={3} cards={cards}></CardMatrix>
+{/if}
 </main>
 
 <style>

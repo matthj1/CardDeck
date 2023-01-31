@@ -1,12 +1,11 @@
 <script type="ts">
     import type {ICardItem, ICardArray} from "../../interfaces"
     import CardWrapper from "./CardWrapper.svelte";
-    import Spinner from "../ui_components/Spinner.svelte";
     import {fade} from "svelte/transition"
+    import LoadingLogo from "../ui_components/LoadingLogo.svelte";
 
     export let cards: ICardItem[];
     export let historySize: number;
-    export let message: string = "There are no items to display"
     let height:number;
     let width:number;
     let displayNumberSlots: number = 1;
@@ -212,16 +211,15 @@
 
 {#each cardArray as card (card.id)}
     <div class="placeholder-center fade-immediately">
-        <Spinner size={60} thin={true}/>
-        <div class="no-items">. : DRAWING FROM THE DECK : .</div>
+        <LoadingLogo/>
     </div>
     <CardWrapper status={card.props.transfer.status} {card} {...coordsToAbsolutePosition(card.position, displayDimension, width, height)}></CardWrapper>
 {:else}
     <div out:fade={{duration: 2000}} class="placeholder-center">
-        <Spinner size={60} thin={true}/>
-        <div class="no-items">. : {message.toUpperCase()} : .</div>
+        <LoadingLogo message={"no cards to display"}/>
     </div>
 {/each}
+
 
 <style>
     .placeholder-center{
@@ -231,10 +229,6 @@
         height: 100%;
         flex-direction: column;
         gap: 30px;
-    }
-
-    .no-items{
-        display: block;
     }
 
     .fade-immediately{

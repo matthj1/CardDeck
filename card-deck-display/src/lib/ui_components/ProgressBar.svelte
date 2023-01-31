@@ -32,7 +32,6 @@
     .progress-outer{
         width: 100%;
         height: 40px;
-        border: 1px solid var(--neon-green);
         position: relative;
     }
 
@@ -43,9 +42,6 @@
         width: 0;
     }
 
-    .warning.progress-outer{
-        border: 1px solid var(--warning-primary);
-    }
     .warning .progress-inner{
         background-color: var(--warning-primary) !important;
     }
