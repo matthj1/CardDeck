@@ -1,16 +1,14 @@
 <script lang="ts">
-    import { getContext } from "svelte";
-    import type { Writable } from "svelte/store";
     import { StatusChoices } from "../../interfaces";
-    export let text:string;
 
-    const status:Writable<StatusChoices> = getContext("status");
+    export let status: StatusChoices
+    $: error = status == StatusChoices.ERROR
+    $: warning = status == StatusChoices.WARNING
 </script>
 
-<div class="color-invert-header upper"
-class:running={$status === StatusChoices.RUNNING || StatusChoices.STALE}
-class:error={$status === StatusChoices.ERROR}
-class:warning={$status === StatusChoices.WARNING}>{text}</div>
+<div class="color-invert-header upper" class:error class:warning>
+<slot></slot>
+</div>
 
 <style>
     .color-invert-header{
@@ -18,8 +16,12 @@ class:warning={$status === StatusChoices.WARNING}>{text}</div>
         font-weight: 700;
         padding: 10px;
         width: fit-content;
-    }
-    .running{
+        text-align: center;
+        flex-basis: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 106px;
         background-image: linear-gradient(135deg, var(--running-primary), var(--neon-green));
         color: rgb(19, 20, 20);
     }

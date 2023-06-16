@@ -1,6 +1,9 @@
 <script lang="ts">
-    export let error:boolean = false;
-    export let warning:boolean = false;
+    import {StatusChoices} from "../../interfaces"
+
+    export let status: StatusChoices;
+    $: error = status === StatusChoices.ERROR
+    $: warning = status === StatusChoices.WARNING;
 </script>
 
 <div class="corner-container" class:error={error} class:warning={warning}>

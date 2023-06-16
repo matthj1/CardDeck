@@ -1,15 +1,14 @@
 <script lang='ts'>
-    import { getContext } from "svelte";
-    import type { Writable } from "svelte/store";
-    import { StatusChoices } from "../../interfaces";    
     export let width:number;
     export let message:string
+    import { StatusChoices } from "../../interfaces";
 
-    const status:Writable<StatusChoices> = getContext("status");
+    export let status: StatusChoices
+    $: warning = status == StatusChoices.WARNING
 </script>
 
 <div class="progress-container">
-    <div class="progress-outer" class:warning = {$status === StatusChoices.WARNING}>
+    <div class="progress-outer" class:warning>
         <div class="progress-inner" style="width: {width}%;"></div>
         <div class="status-center upper">{message}</div>
     </div>
@@ -33,6 +32,7 @@
         width: 100%;
         height: 40px;
         position: relative;
+        background-color: rgb(33, 36, 36);
     }
 
     .progress-inner{

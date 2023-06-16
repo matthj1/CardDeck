@@ -41,3 +41,27 @@ h1, h2, h3, h4, h5, h6 {
   --neon-pink: #f23f92;
   --neon-green: #00f49f;
 }
+
+.flex-inline{
+  display: flex;
+  margin-bottom: 20px;
+  gap: 20px;
+  font-size: 22px;
+  align-items: center;
+}
+
+.bolder{
+  font-weight: 500;
+}
+
+p{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.bigger{
+  font-size: 25px;
+  vertical-align: middle;
+  color: var(--running-light);
+}

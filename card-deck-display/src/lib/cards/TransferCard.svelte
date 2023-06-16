@@ -1,19 +1,15 @@
 <script type="ts">
     import ColorInvertHeader from "../ui_components/ColorInvertHeader.svelte";
     import CornerBox from "../ui_components/CornerBox.svelte";
-    import type { ITransferProps, IPACSRetrievingZipping, IPACSRunningResponse, IPACSFinishedResponse } from "../../interfaces";
+    import type { ITransferProps, IPACSRetrievingZipping, IPACSRunningResponse, IPACSFinishedResponse} from "../../interfaces";
     import {PACSRunningStatus, QueryStatus, StatusChoices} from "../../interfaces";
     import KvBox from "../ui_components/KVBox.svelte";
     import Spinner from "../ui_components/Spinner.svelte";
-    import DotHeader from "../ui_components/DotHeader.svelte";
+    import DotHeader from "../ui_components/Header.svelte";
     import ProgressBar from "../ui_components/ProgressBar.svelte";
-    import { setContext } from "svelte";
-    import { writable } from "svelte/store";
+    import GenericCard from "./GenericCard.svelte";
 
-    export let transfer: ITransferProps;    
-
-    let status = writable<StatusChoices>(transfer.status)
-    setContext("status", status)
+    export let item: ITransferProps;
 
     export function getPACSMessage(query:ITransferProps, showFraction:boolean = false):string{
         let progressString:string;
@@ -79,74 +75,38 @@
     }
 </script>
 
-<CornerBox error={transfer.status === StatusChoices.ERROR} warning={transfer.status === StatusChoices.WARNING}>
-    <div class="flex-split">
-        <ColorInvertHeader text={`${transfer.status===StatusChoices.ERROR?"ERROR ":""}${transfer.transfer_type === "RETRIEVE_SCAN"?"RETRIEVING SCAN":"RETRIEVING STUDY"}`}/>
-        <DotHeader text={transfer.hospital}></DotHeader>
-    </div>
-    <div class="flex-inline">
-        <KvBox key={"gateway"} value={transfer.gateway}/>
-        <KvBox key={"gateway id"} value={transfer.gateway_id}/>
-    </div>
+<GenericCard 
+status={item.status} 
+leftHeader={`${item.status===StatusChoices.ERROR?"ERROR ":""}${item.transfer_type === "RETRIEVE_SCAN"?"RETRIEVING SCAN":"RETRIEVING STUDY"}`}
+rightHeader={item.hospital}>
+    <svelte:fragment slot="middle">
+        <KvBox key={"gateway"} value={item.gateway}/>
+        <KvBox key={"gateway id"} value={item.gateway_id}/>
+    </svelte:fragment>
 
-    <hr>
-    {#if transfer.query_status !== QueryStatus.ERROR}
+    <svelte:fragment slot="bottom">
+        {#if item.query_status !== QueryStatus.ERROR}
 
-    <div class="flex-inline">
-        <Spinner size={22}/>
-        <p class:warning={transfer.status===StatusChoices.WARNING} class="bolder upper">{getPACSMessage(transfer)}</p>
-    </div>
+        <div class="flex-inline">
+            <Spinner size={22}/>
+            <p class:warning={item.status===StatusChoices.WARNING} class="bolder upper">{getPACSMessage(item)}</p>
+        </div>
+    
+        <ProgressBar status={item.status} width={calculateProgress(item.query_status, item.response)} message={getPACSMessage(item, true)}/>
+    
+        <KvBox key={"elapsed time"} value={item.elapsed}/>
+    
+        {:else}
+    
+        <p class="bigger bolder">{item.response.name}</p>
+        <p class="error">{item.response.message}</p>
+    
+        {/if}
+    </svelte:fragment>
 
-    <ProgressBar width={calculateProgress(transfer.query_status, transfer.response)} message={getPACSMessage(transfer, true)}/>
-
-    <KvBox key={"elapsed time"} value={transfer.elapsed}/>
-
-    {:else}
-
-    <p class="bigger bolder">{transfer.response.name}</p>
-    <p class="error">{transfer.response.message}</p>
-
-    {/if}
-
-</CornerBox>
+</GenericCard>
 
 <style>
-    .flex-inline{
-        display: flex;
-        margin-bottom: 20px;
-        gap: 20px;
-        font-size: 22px;
-        align-items: center;
-    }
-
-    .flex-split{
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-
-    .bolder{
-        font-weight: 500;
-    }
-
-    hr{
-        border: none;
-        border-top: 3px solid var(--running-light);
-        margin-bottom: 20px;
-    }
-
-    p{
-        margin-top: 10px;
-        margin-bottom: 10px;
-        font-size: 18px;
-    }
-    
-    .bigger{
-        font-size: 25px;
-        vertical-align: middle;
-        color: var(--running-light);
-    }
-
     .warning{
         color: var(--warning-primary);
     }

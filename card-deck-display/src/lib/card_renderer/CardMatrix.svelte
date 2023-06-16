@@ -213,7 +213,7 @@
     <div class="placeholder-center fade-immediately">
         <LoadingLogo/>
     </div>
-    <CardWrapper status={card.props.transfer.status} {card} {...coordsToAbsolutePosition(card.position, displayDimension, width, height)}></CardWrapper>
+    <CardWrapper status={card.status} {card} {...coordsToAbsolutePosition(card.position, displayDimension, width, height)}></CardWrapper>
 {:else}
     <div out:fade={{duration: 2000}} class="placeholder-center">
         <LoadingLogo message={"no cards to display"}/>
