@@ -3,7 +3,6 @@
     import CardWrapper from "./CardWrapper.svelte";
     import {fade} from "svelte/transition"
     import LoadingLogo from "../ui_components/LoadingLogo.svelte";
-    import { onMount } from "svelte";
 
     export let cards: ICardItem[];
     export let historySize: number;
@@ -208,7 +207,6 @@
     }
 
     function hideAfterAnimation(element:HTMLElement){
-        console.log("hiding stuff...")
         element.style.display = "none";
     }
 
