@@ -113,4 +113,6 @@ export interface IAgentProps extends IInputData{
     full_status: string;
     agent_id: number;
     assigned_instances: string[];
+    is_endpoint: boolean;
+    battery_level: 0 | 1 | 2 | 3;
 }

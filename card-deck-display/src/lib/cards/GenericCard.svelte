@@ -10,18 +10,20 @@
 </script>
 
 <CornerBox status={status}>
-    <div class="flex-split">
-        <ColorInvertHeader status={status}>{leftHeader}</ColorInvertHeader>
-        <DotHeader status={status}>{rightHeader}</DotHeader>
+    <div class="inner">
+        <div class="flex-split">
+            <ColorInvertHeader status={status}>{leftHeader}</ColorInvertHeader>
+            <DotHeader status={status}>{rightHeader}</DotHeader>
+        </div>
+    
+        <div class="flex-inline">
+            <slot name="middle"></slot>
+        </div>
+    
+        <hr>
+    
+        <slot name="bottom"></slot>
     </div>
-
-    <div class="flex-inline">
-        <slot name="middle"></slot>
-    </div>
-
-    <hr>
-
-    <slot name="bottom"></slot>
 </CornerBox>
 
 <style>

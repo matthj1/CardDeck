@@ -1,11 +1,8 @@
 <script type="ts">
-    import ColorInvertHeader from "../ui_components/ColorInvertHeader.svelte";
-    import CornerBox from "../ui_components/CornerBox.svelte";
     import type { ITransferProps, IPACSRetrievingZipping, IPACSRunningResponse, IPACSFinishedResponse} from "../../interfaces";
     import {PACSRunningStatus, QueryStatus, StatusChoices} from "../../interfaces";
     import KvBox from "../ui_components/KVBox.svelte";
     import Spinner from "../ui_components/Spinner.svelte";
-    import DotHeader from "../ui_components/Header.svelte";
     import ProgressBar from "../ui_components/ProgressBar.svelte";
     import GenericCard from "./GenericCard.svelte";
 
@@ -80,8 +77,8 @@ status={item.status}
 leftHeader={`${item.status===StatusChoices.ERROR?"ERROR ":""}${item.transfer_type === "RETRIEVE_SCAN"?"RETRIEVING SCAN":"RETRIEVING STUDY"}`}
 rightHeader={item.hospital}>
     <svelte:fragment slot="middle">
-        <KvBox key={"gateway"} value={item.gateway}/>
-        <KvBox key={"gateway id"} value={item.gateway_id}/>
+        <KvBox key={"gateway"} value={item.gateway} status={item.status}/>
+        <KvBox key={"gateway id"} value={item.gateway_id} status={item.status}/>
     </svelte:fragment>
 
     <svelte:fragment slot="bottom">
@@ -94,8 +91,7 @@ rightHeader={item.hospital}>
     
         <ProgressBar status={item.status} width={calculateProgress(item.query_status, item.response)} message={getPACSMessage(item, true)}/>
     
-        <KvBox key={"elapsed time"} value={item.elapsed}/>
-    
+        <KvBox key={"elapsed time"} value={item.elapsed} status={item.status}/>
         {:else}
     
         <p class="bigger bolder">{item.response.name}</p>

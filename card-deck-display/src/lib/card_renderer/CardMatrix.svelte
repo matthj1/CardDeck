@@ -3,6 +3,7 @@
     import CardWrapper from "./CardWrapper.svelte";
     import {fade} from "svelte/transition"
     import LoadingLogo from "../ui_components/LoadingLogo.svelte";
+    import { onMount } from "svelte";
 
     export let cards: ICardItem[];
     export let historySize: number;
@@ -10,9 +11,10 @@
     let width:number;
     let displayNumberSlots: number = 1;
     let displayDimension: number = 1;
-    let prevCardHistory: number[] = Array()
+    let prevCardHistory: number[] = Array();
     let cardArray: ICardArray;
-    let freeSlots: [number, number][] = []
+    let freeSlots: [number, number][] = [];
+    let loading: HTMLDivElement;
 
     $: {
         cards;
@@ -205,14 +207,21 @@
         }
     }
 
+    function hideAfterAnimation(element:HTMLElement){
+        console.log("hiding stuff...")
+        element.style.display = "none";
+    }
+
 </script>
 
 <svelte:window bind:innerWidth={width} bind:innerHeight={height}/>
 
+{#if cardArray}
+<div bind:this={loading} class="placeholder-center fade-immediately" on:animationend={()=>hideAfterAnimation(loading)}>
+    <LoadingLogo/>
+</div>
+{/if}
 {#each cardArray as card (card.id)}
-    <div class="placeholder-center fade-immediately">
-        <LoadingLogo/>
-    </div>
     <CardWrapper status={card.status} {card} {...coordsToAbsolutePosition(card.position, displayDimension, width, height)}></CardWrapper>
 {:else}
     <div out:fade={{duration: 2000}} class="placeholder-center">

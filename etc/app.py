@@ -9,7 +9,7 @@ from time import sleep
 app = Flask(__name__)
 CORS(app)
 
-MAX_QUERIES = 25
+MAX_QUERIES = 15
 LOW_QUERIES = 4
 increase_queries = True
 
@@ -152,6 +152,47 @@ def error():
         "timing": 15,
         "created": datetime.datetime.now()
     }]
+
+@app.route("/agents")
+def agents():
+    return [
+        {
+            "type": "AGENT",
+            "id": "agent-gifjgijsdfijgif",
+            "status": "RUN",
+            "hospital": "James Bond Hospital",
+            "online": True,
+            "full_status": "ONLINE",
+            "agent_id": 1234,
+            "assigned_instances": ["ITG Endpoint: The Chris Froome Room"],
+            "is_endpoint": True,
+            "battery_level": 2,
+        },
+        {
+            "type": "AGENT",
+            "id": "agent-gifjgfdfmappppdpdpf",
+            "status": "ERROR",
+            "hospital": "James Bond Hospital",
+            "online": True,
+            "full_status": "ONLINE",
+            "agent_id": 1235,
+            "assigned_instances": ["ITG Endpoint: The Chris Froome Room"],
+            "is_endpoint": True,
+            "battery_level": 0,
+        },
+        {
+            "type": "AGENT",
+            "id": "agent-gifjgijsdfijfhfh",
+            "status": "WARN",
+            "hospital": "Bames Jond Hospital",
+            "online": True,
+            "full_status": "ONLINE",
+            "agent_id": 1236,
+            "assigned_instances": ["ITG Endpoint: The Chris Froome Room", "Video Recorder: Screen 1", "Display Steam: Screen 1", "Something else: to make the list long"],
+            "is_endpoint": True,
+            "battery_level": 1,
+        },
+    ]
         
 @app.route("/takes_forever")
 def takes_forever():

@@ -26,8 +26,6 @@
         props: {item: p}
       }
     })
-
-    console.log(cards)
   }
 
   const search = window.location.search
@@ -51,7 +49,7 @@
     if(auth_token){
       data = await getData(urls, auth_token)
     }
-    setTimeout(poll, 3000)
+    setTimeout(poll, 5000)
   }
 
   poll()
