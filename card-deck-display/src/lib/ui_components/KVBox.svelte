@@ -1,15 +1,17 @@
 <script lang="ts">
-    import { getContext } from "svelte";
-    import type { Writable } from "svelte/store";
     import { StatusChoices } from "../../interfaces";
     
     export let key:string;
     export let value:string|number;
-
-    const status:Writable<StatusChoices> = getContext("status")
+    export let status:StatusChoices;
+    $: error = status == StatusChoices.ERROR;
+    $: warning = status == StatusChoices.WARNING;
 </script>
 
-<p><span class:error={$status === StatusChoices.ERROR} class:warning={$status === StatusChoices.WARNING} class="key">{key}: </span><span class="value">{value}</span></p>
+<p>
+    <span class:error class:warning class="key">{key}: </span>
+    <span class="value">{value}</span>
+</p>
 
 <style>
     p{
@@ -23,7 +25,7 @@
     }
     .value{
         font-weight: 500;
-        font-size: 25px;
+        font-size: 24px;
         vertical-align: middle;
         color: var(--running-light);
         text-transform: uppercase;

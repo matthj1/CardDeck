@@ -1,19 +1,20 @@
 import type { SvelteComponent } from "svelte";
 
 export interface ICardItem{
-    type: string
-    id: number|string
-    position?: [number, number]
-    component: typeof SvelteComponent
-    props: any
+    type: string;
+    id: number|string;
+    status: StatusChoices;
+    position?: [number, number];
+    component: typeof SvelteComponent;
+    props: any;
 }
 
 export type ICardArray = ICardItem[]
 
 export interface IInputData{
-    id: number|string
-    status: StatusChoices
-    type: string
+    id: number|string;
+    status: StatusChoices;
+    type: string;
 }
 
 export enum StatusChoices{
@@ -32,13 +33,13 @@ export interface IParrallelFetchData<T>{
 // --------------------------
 
 export interface ITransferPropsBase extends IInputData{
-    query_id: string
-    hospital: string
-    gateway: string
-    gateway_id: number
-    response: any
-    elapsed: string
-    transfer_type: "RETRIEVE_STUDY"|"RETRIEVE_SCAN"
+    query_id: string;
+    hospital: string;
+    gateway: string;
+    gateway_id: number;
+    response: any;
+    elapsed: string;
+    transfer_type: "RETRIEVE_STUDY"|"RETRIEVE_SCAN";
 }
 
 export type ITransferProps = ITransferPropsNew | ITransferPropsQueued | ITransferPropsRunning | ITransferPropsError | ITransferPropsFinished
@@ -52,26 +53,26 @@ export enum QueryStatus {
 }
 
 export interface ITransferPropsNew extends ITransferPropsBase{
-    query_status: QueryStatus.NEW
+    query_status: QueryStatus.NEW;
 }
 
 export interface ITransferPropsQueued extends ITransferPropsBase{
-    query_status: QueryStatus.QUEUED
+    query_status: QueryStatus.QUEUED;
 }
 
 export interface ITransferPropsRunning extends ITransferPropsBase{
-    query_status: QueryStatus.RUNNING
-    response: IPACSRetrievingZipping|IPACSRunningResponse
+    query_status: QueryStatus.RUNNING;
+    response: IPACSRetrievingZipping|IPACSRunningResponse;
 }
 
 export interface ITransferPropsFinished extends ITransferPropsBase{
-    query_status: QueryStatus.FINISHED
-    response: IPACSFinishedResponse
+    query_status: QueryStatus.FINISHED;
+    response: IPACSFinishedResponse;
 }
 
 export interface ITransferPropsError extends ITransferPropsBase{
-    query_status: QueryStatus.ERROR
-    response: IPACSErrorResponse
+    query_status: QueryStatus.ERROR;
+    response: IPACSErrorResponse;
 }
 
 
@@ -87,21 +88,31 @@ export enum PACSRunningStatus{
 }
 
 export interface IPACSRunningResponse{
-    status: PACSRunningStatus.collecting | PACSRunningStatus.upload_transfer_complete | PACSRunningStatus.started | PACSRunningStatus.waiting_silo
+    status: PACSRunningStatus.collecting | PACSRunningStatus.upload_transfer_complete | PACSRunningStatus.started | PACSRunningStatus.waiting_silo;
 }
 
 export interface IPACSRetrievingZipping{
-    status: PACSRunningStatus.retrieving|PACSRunningStatus.zipping|PACSRunningStatus.uploading
-    completed: number
-    total: number
+    status: PACSRunningStatus.retrieving|PACSRunningStatus.zipping|PACSRunningStatus.uploading;
+    completed: number;
+    total: number;
 }
 
 export interface IPACSFinishedResponse{
-    status: PACSRunningStatus.finished,
-    response: {redirect:string}
+    status: PACSRunningStatus.finished;
+    response: {redirect:string};
 }
 
 export interface IPACSErrorResponse{
-    name: string
-    message: string
+    name: string;
+    message: string;
+}
+
+export interface IAgentProps extends IInputData{
+    hospital: string;
+    online: boolean;
+    full_status: string;
+    agent_id: number;
+    assigned_instances: string[];
+    is_endpoint: boolean;
+    battery_level: 0 | 1 | 2 | 3;
 }

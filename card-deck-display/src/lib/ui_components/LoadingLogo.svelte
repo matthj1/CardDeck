@@ -186,13 +186,6 @@ class:running={status === StatusChoices.RUNNING}>
         width: 1000px;
         height: 650px;
     }
-
-    .flex-inline{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 20px;
-    }
     
     p.light{
         font-size: 40px;

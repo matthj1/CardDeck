@@ -1,6 +1,7 @@
 <script lang="ts">
   import CardMatrix from "./lib/card_renderer/CardMatrix.svelte";
   import TransferCard from "./lib/cards/TransferCard.svelte"
+  import AgentCard from "./lib/cards/AgentCard.svelte";
   import type {IInputData, ICardItem} from "./interfaces"
   import {StatusChoices} from "./interfaces"
   import { parallelFetch } from "./parallelFetch";
@@ -12,6 +13,7 @@
 
   const cardTypeToComponent = {
     "PACS_TRANSFER": TransferCard,
+    "AGENT": AgentCard,
   }
 
   $: {
@@ -20,7 +22,8 @@
         type: p.type,
         id: p.id,
         component: cardTypeToComponent[p.type],
-        props: {transfer: p}
+        status: p.status,
+        props: {item: p}
       }
     })
   }
@@ -46,7 +49,7 @@
     if(auth_token){
       data = await getData(urls, auth_token)
     }
-    setTimeout(poll, 3000)
+    setTimeout(poll, 5000)
   }
 
   poll()

@@ -9,7 +9,7 @@ from time import sleep
 app = Flask(__name__)
 CORS(app)
 
-MAX_QUERIES = 25
+MAX_QUERIES = 15
 LOW_QUERIES = 4
 increase_queries = True
 
@@ -18,7 +18,8 @@ query_id = 0
 hospitals_and_gateways = [
     {"hospital": "Barbados General Hospital", "gateway":"Barbados Hospital Gateway"},
     {"hospital": "UMCSN, Nevada", "gateway": "2PACS Shakur"},
-    {"hospital": "Winnipeg General Hospital", "gateway": "PACSman Turner Overdrive"}
+    {"hospital": "Winnipeg General Hospital", "gateway": "PACSman Turner Overdrive"},
+    {"hospital": "Guys and St Thomas' Hospital, United Kingdom", "gateway": "Really long PACS name is really long"}
 ]
 
 transfer_types = [
@@ -122,7 +123,7 @@ def error():
         "id" : "query-anfnjnjndjfnjdg",
         "status" : "ERROR",
         "query_id": "anfnjnjndjfnjdgjnjgg",
-        "hospital": "Broken General Hospital",
+        "hospital": "Broken General Hospital, Brokenville",
         "gateway": "Broken Gateway",
         "gateway_id": 1235,
         "elapsed": 0,
@@ -137,7 +138,7 @@ def error():
         "id" : "query-anfnjnjndjfnjdgijfiji",
         "status" : "WARN",
         "query_id": "anfnjnjndjfnjdgjnjggkfkdokfokf",
-        "hospital": "Slow General Hospital",
+        "hospital": "Really Long Hospital Name, United Kingdom",
         "gateway": "Slow Gateway",
         "gateway_id": 1236,
         "elapsed": 0,
@@ -151,6 +152,47 @@ def error():
         "timing": 15,
         "created": datetime.datetime.now()
     }]
+
+@app.route("/agents")
+def agents():
+    return [
+        {
+            "type": "AGENT",
+            "id": "agent-gifjgijsdfijgif",
+            "status": "RUN",
+            "hospital": "James Bond Hospital",
+            "online": True,
+            "full_status": "ONLINE",
+            "agent_id": 1234,
+            "assigned_instances": ["ITG Endpoint: The Chris Froome Room"],
+            "is_endpoint": True,
+            "battery_level": 2,
+        },
+        {
+            "type": "AGENT",
+            "id": "agent-gifjgfdfmappppdpdpf",
+            "status": "ERROR",
+            "hospital": "James Bond Hospital",
+            "online": True,
+            "full_status": "ONLINE",
+            "agent_id": 1235,
+            "assigned_instances": ["ITG Endpoint: The Chris Froome Room"],
+            "is_endpoint": True,
+            "battery_level": 0,
+        },
+        {
+            "type": "AGENT",
+            "id": "agent-gifjgijsdfijfhfh",
+            "status": "WARN",
+            "hospital": "Bames Jond Hospital",
+            "online": True,
+            "full_status": "ONLINE",
+            "agent_id": 1236,
+            "assigned_instances": ["ITG Endpoint: The Chris Froome Room", "Video Recorder: Screen 1", "Display Steam: Screen 1", "Something else: to make the list long"],
+            "is_endpoint": True,
+            "battery_level": 1,
+        },
+    ]
         
 @app.route("/takes_forever")
 def takes_forever():
@@ -162,7 +204,7 @@ def create_query():
     now = datetime.datetime.now()
     time_to_completion = random.randint(15, 60)
     transfer = random.randint(0, 1)
-    gateway_id = random.randint(0, 2)
+    gateway_id = random.randint(0, 3)
     global query_id
     query = {
         "type": "PACS_TRANSFER",
