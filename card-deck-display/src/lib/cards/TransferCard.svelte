@@ -79,6 +79,7 @@ rightHeader={item.hospital}>
     <svelte:fragment slot="middle">
         <KvBox key={"gateway"} value={item.gateway} status={item.status}/>
         <KvBox key={"gateway id"} value={item.gateway_id} status={item.status}/>
+        <KvBox key={"transfer started"} value={item.started} status={item.status}/>
     </svelte:fragment>
 
     <svelte:fragment slot="bottom">

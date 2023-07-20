@@ -206,19 +206,10 @@
         }
     }
 
-    function hideAfterAnimation(element:HTMLElement){
-        element.style.display = "none";
-    }
-
 </script>
 
 <svelte:window bind:innerWidth={width} bind:innerHeight={height}/>
 
-{#if cardArray}
-<div bind:this={loading} class="placeholder-center fade-immediately" on:animationend={()=>hideAfterAnimation(loading)}>
-    <LoadingLogo/>
-</div>
-{/if}
 {#each cardArray as card (card.id)}
     <CardWrapper status={card.status} {card} {...coordsToAbsolutePosition(card.position, displayDimension, width, height)}></CardWrapper>
 {:else}
@@ -236,21 +227,5 @@
         height: 100%;
         flex-direction: column;
         gap: 30px;
-    }
-
-    .fade-immediately{
-        animation: fade 2000ms;
-        opacity: 0;
-    }
-    @keyframes fade{
-        0%{
-            opacity: 1;
-        }
-        50%{
-            opacity: 1;
-        }
-        100%{
-            opacity: 0;
-        }
     }
 </style>
