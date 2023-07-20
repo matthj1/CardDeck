@@ -39,6 +39,7 @@ export interface ITransferPropsBase extends IInputData{
     gateway_id: number;
     response: any;
     elapsed: string;
+    started: string;
     transfer_type: "RETRIEVE_STUDY"|"RETRIEVE_SCAN";
 }
 
