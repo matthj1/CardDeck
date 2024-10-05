@@ -3,8 +3,8 @@
     export let message:string
     import { StatusChoices } from "../../interfaces";
 
-    export let status: StatusChoices
-    $: warning = status == StatusChoices.WARNING
+    export let status: StatusChoices;
+    $: warning = status == StatusChoices.WARNING;
 </script>
 
 <div class="progress-container">

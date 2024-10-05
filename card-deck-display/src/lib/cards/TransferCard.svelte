@@ -8,74 +8,79 @@
 
     export let item: ITransferProps;
 
-    export function getPACSMessage(query:ITransferProps, showFraction:boolean = false):string{
+    export function getMessageAndProgress(query:ITransferProps): {message: string, progress: number, extra?: string}{
         let progressString:string;
         switch (query.query_status){
             case QueryStatus.NEW:
-                return "Sending request..."
+                return {
+                    message: "Sending request...",
+                    progress: 0
+                };
             case QueryStatus.QUEUED:
-                return "Waiting in the queue"
+                return {
+                    message: "Waiting in the queue",
+                    progress: 5
+                };
             case QueryStatus.RUNNING:
                 switch (query.response.status){
                     case PACSRunningStatus.started:
-                        return "Initiating transfer"
+                        return {
+                            message: "Initiating transfer",
+                            progress: 10
+                        };
                     case PACSRunningStatus.retrieving:
-                        progressString = `: ${query.response.completed} of ${query.response.total}`
-                        return `Importing from PACS${showFraction ? progressString : ""}` 
+                        return {
+                            message: "Importing from PACS",
+                            progress: 10 + Math.floor((query.response.completed/query.response.total) * 40),
+                            extra: `${query.response.completed} of ${query.response.total}`
+                        };
                     case PACSRunningStatus.waiting_silo:
-                        return "Waiting for further images"
+                        return {
+                            message: "Waiting for further images",
+                            progress: 55
+                        };
                     case PACSRunningStatus.collecting:
-                        return "Collecting images"
+                        return {
+                            message: "Collecting images",
+                            progress: 60
+                        };
                         case PACSRunningStatus.zipping:
-                        progressString = `: ${query.response.completed} of ${query.response.total}`
-                        return `Packaging images${showFraction ? progressString : ""}`
+                        return {
+                            message: "Packaging images",
+                            progress: 60 + Math.floor((query.response.completed/query.response.total) * 10),
+                            extra: `${query.response.completed} of ${query.response.total}`
+                        };
                     case PACSRunningStatus.uploading:
-                        progressString = `: ${query.response.completed} of ${query.response.total}`
-                        return `Uploading to Cydar${showFraction ? progressString : ""}`
+                        return {
+                            message: `Uploading to Cydar`,
+                            progress: 70 + Math.floor((query.response.completed/query.response.total) * 30),
+                            extra: `${query.response.completed} of ${query.response.total}`
+                        };
                     case PACSRunningStatus.upload_transfer_complete:
-                        return "Preparing study"
+                        return {
+                            message: "Preparing study",
+                            progress: 100
+                        };
                     default:
-                        return ""
+                        return {
+                            message: "",
+                            progress: 100
+                        };
                 }
         }
-        return ""
+        return {
+            message: "",
+            progress: 100
+        }
     }
 
-    export function calculateProgress(status:QueryStatus, response:IPACSRetrievingZipping|IPACSRunningResponse|IPACSFinishedResponse):number{
-        switch(status){
-            case QueryStatus.NEW:
-                return 0;
-            case QueryStatus.QUEUED:
-                return 5;
-            case QueryStatus.RUNNING:
-                switch(response.status){
-                    case PACSRunningStatus.started:
-                        return 10;
-                    case PACSRunningStatus.retrieving:
-                        return 10 + Math.floor((response.completed/response.total) * 40); //up to 50% complete
-                    case PACSRunningStatus.waiting_silo:
-                        return 55;
-                    case PACSRunningStatus.collecting:
-                        return 60;
-                    case PACSRunningStatus.zipping:
-                        return 60 + Math.floor((response.completed/response.total) * 10); // up to 70%
-                    case PACSRunningStatus.uploading:
-                        return 70 + Math.floor((response.completed/response.total) * 30); // 70 to 100%
-                    case PACSRunningStatus.upload_transfer_complete:
-                        return 100;
-                }
-            case QueryStatus.FINISHED:
-                return 100;
-            default:
-                return 0;
-        }
-    }
+    $: progressReport = getMessageAndProgress(item);
 </script>
 
 <GenericCard 
-status={item.status} 
-leftHeader={`${item.status===StatusChoices.ERROR?"ERROR ":""}${item.transfer_type === "RETRIEVE_SCAN"?"RETRIEVING SCAN":"RETRIEVING STUDY"}`}
-rightHeader={item.hospital}>
+    status={item.status} 
+    leftHeader={`${item.status===StatusChoices.ERROR?"ERROR ":""}${item.transfer_type === "RETRIEVE_SCAN"?"RETRIEVING SCAN":"RETRIEVING STUDY"}`}
+    rightHeader={item.hospital}>
     <svelte:fragment slot="middle">
         <KvBox key={"gateway"} value={item.gateway} status={item.status}/>
         <KvBox key={"gateway id"} value={item.gateway_id} status={item.status}/>
@@ -85,19 +90,18 @@ rightHeader={item.hospital}>
     <svelte:fragment slot="bottom">
         {#if item.query_status !== QueryStatus.ERROR}
 
-        <div class="flex-inline">
+        <div class="flex-inline fixed-height">
             <Spinner size={22}/>
-            <p class:warning={item.status===StatusChoices.WARNING} class="bolder upper">{getPACSMessage(item)}</p>
+            <p class:warning={item.status===StatusChoices.WARNING} class="bolder upper">{progressReport.message}</p>
         </div>
-    
-        <ProgressBar status={item.status} width={calculateProgress(item.query_status, item.response)} message={getPACSMessage(item, true)}/>
-    
+        <ProgressBar status={item.status} width={progressReport.progress} message={`${progressReport.message} ${progressReport.extra ? progressReport.extra : ""}`}/>
         <KvBox key={"elapsed time"} value={item.elapsed} status={item.status}/>
+
         {:else}
-    
+
         <p class="bigger bolder">{item.response.name}</p>
-        <p class="error">{item.response.message}</p>
-    
+        <p class="error">{item.response.message}</p>    
+
         {/if}
     </svelte:fragment>
 
@@ -110,5 +114,9 @@ rightHeader={item.hospital}>
 
     .error{
         color: var(--error-primary)
+    }
+
+    .fixed-height{
+        height: 30px;
     }
 </style>

@@ -3,8 +3,8 @@
     import Spinner from "./Spinner.svelte";
 
 
-    export let message:string = "Drawing from the deck"
-    export let status:StatusChoices = StatusChoices.RUNNING
+    export let message:string = "Drawing from the deck";
+    export let status:StatusChoices = StatusChoices.RUNNING;
 </script>
 
 <div 

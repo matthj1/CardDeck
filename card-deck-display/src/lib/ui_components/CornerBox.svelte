@@ -2,7 +2,7 @@
     import {StatusChoices} from "../../interfaces"
 
     export let status: StatusChoices;
-    $: error = status === StatusChoices.ERROR
+    $: error = status === StatusChoices.ERROR;
     $: warning = status === StatusChoices.WARNING;
 </script>
 

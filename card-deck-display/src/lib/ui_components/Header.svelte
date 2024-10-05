@@ -1,9 +1,9 @@
 <script lang='ts'>
     import { StatusChoices } from "../../interfaces";
 
-    export let status: StatusChoices
-    $: error = status == StatusChoices.ERROR
-    $: warning = status == StatusChoices.WARNING
+    export let status: StatusChoices;
+    $: error = status == StatusChoices.ERROR;
+    $: warning = status == StatusChoices.WARNING;
 
 </script>
 
