@@ -1,5 +1,5 @@
 <script type="ts">
-    import type { ITransferProps, IPACSRetrievingZipping, IPACSRunningResponse, IPACSFinishedResponse} from "../../interfaces";
+    import type { ITransferProps} from "../../interfaces";
     import {PACSRunningStatus, QueryStatus, StatusChoices} from "../../interfaces";
     import KvBox from "../ui_components/KVBox.svelte";
     import Spinner from "../ui_components/Spinner.svelte";
@@ -9,7 +9,6 @@
     export let item: ITransferProps;
 
     export function getMessageAndProgress(query:ITransferProps): {message: string, progress: number, extra?: string}{
-        let progressString:string;
         switch (query.query_status){
             case QueryStatus.NEW:
                 return {

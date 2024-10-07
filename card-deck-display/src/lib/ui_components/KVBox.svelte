@@ -29,6 +29,8 @@
         vertical-align: middle;
         color: var(--running-light);
         text-transform: uppercase;
+        display: inline-block;
+        max-width: 350px;
     }
     .error{
         color: var(--error-primary);

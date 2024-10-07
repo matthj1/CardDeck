@@ -1,6 +1,3 @@
-// cache data from sources that have failed
-// wait for all sources to resolve
-
 import {StatusChoices} from "./interfaces"
 import type {IParrallelFetchData, IInputData} from "./interfaces"
 
