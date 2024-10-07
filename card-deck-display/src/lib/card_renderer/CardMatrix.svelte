@@ -22,9 +22,7 @@
     }
 
 
-    // Calculate how many slots to create
-
-
+    // Poor man's FIFO Queue
     function updateHistory():void{
         if(prevCardHistory.length < historySize){
             prevCardHistory.push(cards.length);
@@ -35,9 +33,10 @@
         }
     }
 
-    function calculateNumberOfSlots(prevCardHistory:number[], currentNumberCards):number[]{
+    // Calculate how many slots to create for cards, in square numbers
+    function calculateNumberOfSlots(prevCardHistory:number[], currentNumberCards: number):number[]{
         const increase = candidateIncrease(prevCardHistory);
-        const decrease = candidateDecrease(prevCardHistory, currentNumberCards, cards);
+        const decrease = candidateDecrease(prevCardHistory, currentNumberCards);
         if (increase > currentNumberCards){
             return [increase, Math.sqrt(increase)];
         }
@@ -55,7 +54,11 @@
         return nextLargerSquare(largest);
     }
 
-    function candidateDecrease(prevCardHistory:number[], displayedNumberSlots:number, cards:ICardItem[]):number{
+    // Calculate the first number which is lower than number of cards, who's square root is an integer
+    // Example, 7 cards would return 4
+    // Then, check that every item in the history is less than or equal to that
+    // This causes the number of slots to only decrease if there's been less cards than slots for the length of history
+    function candidateDecrease(prevCardHistory:number[], displayedNumberSlots:number):number{
         if(!prevCardHistory.length){
             return displayedNumberSlots;
         }
@@ -76,9 +79,8 @@
     }
 
 
-    // Populating the array
-
-
+    // Find a position for each card
+    // Example, 0, 0 would be the top left card
     function arrayToPosition(cards:ICardItem[], existing:ICardArray = []):ICardArray{
         const existingIDs = existing.map(p => p.id);
         const newIDs = cards.map(p => p.id);
@@ -100,14 +102,14 @@
             existing[cardIndex] = {...newCard, position: position};
         }
 
+        // work out which slots are free
         calculateFreeSlots(existing, displayDimension);
+        // move the existing cards to a free slot
         existing = clump(existing, displayDimension);
 
         // add new cards
-
         for(const cardToAdd of cardsToAdd){
             const newCard = cards.find(p => p.id === cardToAdd);
-            const position = randomFreeSlot();
             calculateFreeSlots(existing, displayDimension);
             existing.push({...newCard, position: randomFreeSlot()});
         }
@@ -120,6 +122,7 @@
         return freeSlots[index];
     }
 
+    // populate the freeSlots array
     function calculateFreeSlots(cardArray:ICardItem[], dimension:number):void{
         const takenSlots = cardArray.map(p => p.position);
         freeSlots = [];
@@ -134,6 +137,7 @@
         }
     }
 
+    // checks for array item equality such that [0, 0] == [0, 0]
     function arrayIsEqual(arr1:any[], arr2:any[]):boolean{
         if(arr1.length === arr2.length){
             if(arr1.every((value, index) => arr2[index] === value)){
@@ -143,9 +147,9 @@
         return false;
     }
 
+    // move cards into the nearest free slot when the number of slots decreases
     function clump(cardArray:ICardArray, displayDimension:number):ICardArray{
-        for(let x = 0; x < cardArray.length; x++){
-            const card = cardArray[x];
+        for(const card of cardArray){
             // check if it's out of bounds
             if(card.position[0] >= displayDimension || card.position[1] >= displayDimension){
                 // find the closest free slot by euclidian distance
@@ -168,7 +172,8 @@
 
     // Display dimension and layout calculations
 
-
+    // Calculations are based on the display area having a 16:9 aspect ratio
+    // If the screen isn't 16:9, find the largest 16:9 dimensions that will fit
     function largest169Box(width:number, height:number):[number, number]{
         const targetRatio = 16/9;
         const screenRatio = width/height;
@@ -183,6 +188,7 @@
         }
     }
 
+    // Calculate the change in position required to fit everything into the largest 16:9 box
     function calculateOffsets(screenWidth:number, screenHeight:number, targetWidth:number, targetHeight:number, dimension:number):{width:number, height:number, widthMultiplier:number, heightMultiplier:number}{
         const widthTotalOffset = screenWidth - targetWidth;
         const heightTotalOffset = screenHeight - targetHeight;
@@ -194,7 +200,9 @@
         };
     }
 
-    function coordsToAbsolutePosition(coords:[number, number], dimension:number, screenWidth:number, screenHeight:number):{top: number, left:number, scale:number}{
+    // Transform the position array to an absolute position and scale
+    // CardWrapper uses results to position each card
+    function positionToAbsolutePosition(coords:[number, number], dimension:number, screenWidth:number, screenHeight:number):{top: number, left:number, scale:number}{
         const [row, column] = coords;
         const [targetWidth, targetHeight] = largest169Box(width, height);
         const offsets = calculateOffsets(screenWidth, screenHeight, targetWidth, targetHeight, dimension);
@@ -210,7 +218,7 @@
 <svelte:window bind:innerWidth={width} bind:innerHeight={height}/>
 
 {#each cardArray as card (card.id)}
-    <CardWrapper status={card.status} {card} {...coordsToAbsolutePosition(card.position, displayDimension, width, height)}></CardWrapper>
+    <CardWrapper status={card.status} {card} {...positionToAbsolutePosition(card.position, displayDimension, width, height)}></CardWrapper>
 {:else}
     <div out:fade={{duration: 2000}} class="placeholder-center">
         <LoadingLogo message={"no cards to display"}/>

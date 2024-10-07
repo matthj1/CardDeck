@@ -34,7 +34,7 @@
   const auth_token = params.get("token")
 
   async function getData(sources:string[], token:string):Promise<IInputData[]>{
-    const sourcesWithOptions = sources.map(s => {return {url:s, options: {headers: {Authorization: `bearer ${token}`}}}})
+    const sourcesWithOptions = sources.map(source => {return {url:source, options: {headers: {Authorization: `bearer ${token}`}}}})
     const allData = await parallelFetch<IInputData>(sourcesWithOptions)
     const flattenedData = allData.map(a => a.data).flat(1) 
     const allStatuses = allData.map(a => a.status)

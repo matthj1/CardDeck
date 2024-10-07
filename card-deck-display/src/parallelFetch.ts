@@ -3,6 +3,8 @@ import type {IParrallelFetchData, IInputData} from "./interfaces"
 
 let cache = {};
 
+// Fetch from multiple sources and cache result
+// If a source fails or can't be retrieved within the timeout us cache
 export async function parallelFetch<Type>(sources:{url: string, options?: RequestInit}[]):Promise<IParrallelFetchData<Type>[]>{
     let output = [];
     const responses = await Promise.allSettled(
