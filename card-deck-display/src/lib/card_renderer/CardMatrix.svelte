@@ -46,6 +46,8 @@
         return [currentNumberCards, Math.sqrt(currentNumberCards)];
     }
 
+    // Calculate the first number which is higher than the largest number in card history who's square root is an integer
+    // Example, 7 cards would return 9
     function candidateIncrease(prevCardHistory:number[]):number{
         let largest = cards.length;
         if (prevCardHistory.length){
